@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using OculusSampleFramework;
@@ -35,6 +35,8 @@ public class OverallController : MonoBehaviour
     {
         frameCtr = 0;  
         curFrameIdx = 0;
+        currentScore = 0; 
+        GameObject.Find("ActualScore").GetComponent<Text>().text = currentScore.ToString();
         //initialize left blocks
         leftBlocks[210] = "M";
         leftBlocks[330] = "M";
@@ -241,185 +243,186 @@ public class OverallController : MonoBehaviour
         };
         curFrame = keyFrames[0];
         curDir = "M";
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        	// if(faceSignal.ContainsKey(frameCtr)){
-        	// 	//if is face
-        	// 	moveFace(faceSignal[frameCtr]);
-        	// 	curDir = faceSignal[frameCtr];
-        		
-        	// }
-        	// if(leftNoodleSignal.ContainsKey(frameCtr)){
-        	// 	//if is left noodle
-        	// 	moveLeftNoodle(leftNoodleSignal[frameCtr]);
+        	if(faceSignal.ContainsKey(frameCtr)){
+        		//if is face
+        		moveFace(faceSignal[frameCtr]);
+        	}
+
+        	if(leftNoodleSignal.ContainsKey(frameCtr)){
+        		//if is left noodle
+        		moveLeftNoodle(leftNoodleSignal[frameCtr]);
+        	}
+
+        	if(rightNoodleSignal.ContainsKey(frameCtr)){
+        		//if is right noodle
+        		moveRightNoodle(rightNoodleSignal[frameCtr]);
         	
-        	// }
-        	// if(rightNoodleSignal.ContainsKey(frameCtr)){
-        	// 	//if is right noodle
-        	// 	moveRightNoodle(rightNoodleSignal[frameCtr]);
-        	
-        	// }
+        	}
 
         	if(leftBlocks.ContainsKey(frameCtr)){
-                GameObject.Find("instruction").GetComponent<Text>().text = "Right Hook";
+                //GameObject.Find("instruction").GetComponent<Text>().text = "Right Hook";
                 spawnLeftBlock(leftBlocks[frameCtr]);
+                GameObject.Find("InstructionsSet").GetComponent<InstructionController>().showInstruction("Right Hook");
         	}
         	if(middleBlocks.ContainsKey(frameCtr)){
-                GameObject.Find("instruction").GetComponent<Text>().text = "Jab";
+                //GameObject.Find("instruction").GetComponent<Text>().text = "Jab";
                 spawnMiddleBlock(middleBlocks[frameCtr]);
+                GameObject.Find("InstructionsSet").GetComponent<InstructionController>().showInstruction("Jab");
         	}
         	if(rightBlocks.ContainsKey(frameCtr)){
-                GameObject.Find("instruction").GetComponent<Text>().text = "Left Hook";
+                //GameObject.Find("instruction").GetComponent<Text>().text = "Left Hook";
                 spawnRightBlock(rightBlocks[frameCtr]);
+                GameObject.Find("InstructionsSet").GetComponent<InstructionController>().showInstruction("Left Hook");
         	}
         	frameCtr++;
     }
 
     public void updateScore(int deltaValue){
     	currentScore += deltaValue;
-        GameObject.Find("debug").GetComponent<Text>().text = currentScore.ToString();
+        //GameObject.Find("debug").GetComponent<Text>().text = currentScore.ToString();
         //TODO: change the score board
+        GameObject.Find("ActualScore").GetComponent<Text>().text = currentScore.ToString();
     }
 
     void moveLeftNoodle(string signal){
-    	RodController r_c = GameObject.Find("Left_pivot").GetComponent<RodController>();
-    	if(signal == "X"){
-    		r_c.l_start_over = true;
-    		r_c.l_hold = true;
-    		r_c.l_horizontal_rot = false; 
-    		r_c.l_horizontal_rot_back = false; 
-    		r_c.l_is_horizontal = false;
-    		r_c.l_up = false;
-    		r_c.l_down = false;
-    	}
-    	else if(signal == "WS"){
-    		r_c.l_start_over = true;
-    		r_c.l_hold = false;
-    		r_c.l_horizontal_rot = true; 
-    		r_c.l_horizontal_rot_back = false; 
-    		r_c.l_is_horizontal = false;
-    		r_c.l_up = false;
-    		r_c.l_down = false;
-    	}
-    	else if(signal == "WE"){
-    		r_c.l_start_over = true;
-    		r_c.l_hold = false;
-    		r_c.l_horizontal_rot = false; 
-    		r_c.l_horizontal_rot_back = true; 
-    		r_c.l_is_horizontal = false;
-    		r_c.l_up = false;
-    		r_c.l_down = false;
-    	}
-    	else if(signal == "W"){
-    		r_c.l_start_over = true;
-    		r_c.l_hold = false;
-    		r_c.l_horizontal_rot = false; 
-    		r_c.l_horizontal_rot_back = false;
-    		r_c.l_is_horizontal = true;
-    		r_c.l_up = false;
-    		r_c.l_down = false;
-    	}
-    	else if(signal == "U"){
-    		r_c.l_start_over = true;
-    		r_c.l_hold = false;
-    		r_c.l_horizontal_rot = false; 
-    		r_c.l_horizontal_rot_back = false;
-    		r_c.l_is_horizontal = false;
-    		r_c.l_up = true;
-    		r_c.l_down = false;
+        RodController r_c = GameObject.Find("Right_pivot").GetComponent<RodController>();
+        if(signal == "X"){
+            r_c.l_start_over = true;
+            r_c.l_hold = true;
+            r_c.l_horizontal_rot = false; 
+            r_c.l_horizontal_rot_back = false; 
+            r_c.l_is_horizontal = false;
+            r_c.l_up = false;
+            r_c.l_down = false;
+        }
+        else if(signal == "WS"){
+            r_c.l_start_over = true;
+            r_c.l_hold = false;
+            r_c.l_horizontal_rot = true; 
+            r_c.l_horizontal_rot_back = false; 
+            r_c.l_is_horizontal = false;
+            r_c.l_up = false;
+            r_c.l_down = false;
+        }
+        else if(signal == "WE"){
+            r_c.l_start_over = true;
+            r_c.l_hold = false;
+            r_c.l_horizontal_rot = false; 
+            r_c.l_horizontal_rot_back = true; 
+            r_c.l_is_horizontal = false;
+            r_c.l_up = false;
+            r_c.l_down = false;
+        }
+        // else if(signal == "W"){
+        //  r_c.l_start_over = true;
+        //  r_c.l_hold = false;
+        //  r_c.l_horizontal_rot = false; 
+        //  r_c.l_horizontal_rot_back = false;
+        //  r_c.l_is_horizontal = true;
+        //  r_c.l_up = false;
+        //  r_c.l_down = false;
+        // }
+        else if(signal == "U"){
+            r_c.l_start_over = true;
+            r_c.l_hold = false;
+            r_c.l_horizontal_rot = false; 
+            r_c.l_horizontal_rot_back = false;
+            r_c.l_is_horizontal = false;
+            r_c.l_up = true;
+            r_c.l_down = false;
 
-    	}
-    	else if(signal == "D"){
-    		r_c.l_start_over = true;
-    		r_c.l_hold = false;
-    		r_c.l_horizontal_rot = false; 
-    		r_c.l_horizontal_rot_back = false;
-    		r_c.l_is_horizontal = false;
-    		r_c.l_up = false;
-    		r_c.l_down = true;
-    	}
+        }
+        else if(signal == "D"){
+            r_c.l_start_over = true;
+            r_c.l_hold = false;
+            r_c.l_horizontal_rot = false; 
+            r_c.l_horizontal_rot_back = false;
+            r_c.l_is_horizontal = false;
+            r_c.l_up = false;
+            r_c.l_down = true;
+        }
     }
 
     void moveRightNoodle(string signal){
-    	RodController r_c = GameObject.Find("Left_pivot").GetComponent<RodController>();
-    	if(signal == "X"){
-    		r_c.r_start_over = true;
-    		r_c.r_hold = true;
-    		r_c.r_horizontal_rot = false; 
-    		r_c.r_horizontal_rot_back = false; 
-    		r_c.r_is_horizontal = false;
-    		r_c.r_up = false;
-    		r_c.r_down = false;
-    	}
-    	else if(signal == "WS"){
-    		r_c.r_start_over = true;
-    		r_c.r_hold = false;
-    		r_c.r_horizontal_rot = true; 
-    		r_c.r_horizontal_rot_back = false; 
-    		r_c.r_is_horizontal = false;
-    		r_c.r_up = false;
-    		r_c.r_down = false;
-    	}
-    	else if(signal == "WE"){
-    		r_c.r_start_over = true;
-    		r_c.r_hold = false;
-    		r_c.r_horizontal_rot = false; 
-    		r_c.r_horizontal_rot_back = true; 
-    		r_c.r_is_horizontal = false;
-    		r_c.r_up = false;
-    		r_c.r_down = false;
-    	}
-    	else if(signal == "W"){
-    		r_c.r_start_over = true;
-    		r_c.r_hold = false;
-    		r_c.r_horizontal_rot = false; 
-    		r_c.r_horizontal_rot_back = false;
-    		r_c.r_is_horizontal = true;
-    		r_c.r_up = false;
-    		r_c.r_down = false;
-    	}
-    	else if(signal == "U"){
-    		r_c.r_start_over = true;
-    		r_c.r_hold = false;
-    		r_c.r_horizontal_rot = false; 
-    		r_c.r_horizontal_rot_back = false;
-    		r_c.r_is_horizontal = false;
-    		r_c.r_up = true;
-    		r_c.r_down = false;
+        RodController r_c = GameObject.Find("Right_pivot").GetComponent<RodController>();
+        if(signal == "X"){
+            r_c.r_start_over = true;
+            r_c.r_hold = true;
+            r_c.r_horizontal_rot = false; 
+            r_c.r_horizontal_rot_back = false; 
+            r_c.r_is_horizontal = false;
+            r_c.r_up = false;
+            r_c.r_down = false;
+        }
+        else if(signal == "WS"){
+            r_c.r_start_over = true;
+            r_c.r_hold = false;
+            r_c.r_horizontal_rot = true; 
+            r_c.r_horizontal_rot_back = false; 
+            r_c.r_is_horizontal = false;
+            r_c.r_up = false;
+            r_c.r_down = false;
+        }
+        else if(signal == "WE"){
+            r_c.r_start_over = true;
+            r_c.r_hold = false;
+            r_c.r_horizontal_rot = false; 
+            r_c.r_horizontal_rot_back = true; 
+            r_c.r_is_horizontal = false;
+            r_c.r_up = false;
+            r_c.r_down = false;
+        }
+        // else if(signal == "W"){
+        //  r_c.r_start_over = true;
+        //  r_c.r_hold = false;
+        //  r_c.r_horizontal_rot = false; 
+        //  r_c.r_horizontal_rot_back = false;
+        //  r_c.r_is_horizontal = true;
+        //  r_c.r_up = false;
+        //  r_c.r_down = false;
+        // }
+        else if(signal == "U"){
+            r_c.r_start_over = true;
+            r_c.r_hold = false;
+            r_c.r_horizontal_rot = false; 
+            r_c.r_horizontal_rot_back = false;
+            r_c.r_is_horizontal = false;
+            r_c.r_up = true;
+            r_c.r_down = false;
 
-    	}
-    	else if(signal == "D"){
-    		r_c.r_start_over = true;
-    		r_c.r_hold = false;
-    		r_c.r_horizontal_rot = false; 
-    		r_c.r_horizontal_rot_back = false;
-    		r_c.r_is_horizontal = false;
-    		r_c.r_up = false;
-    		r_c.r_down = true;
-    	}
+        }
+        else if(signal == "D"){
+            r_c.r_start_over = true;
+            r_c.r_hold = false;
+            r_c.r_horizontal_rot = false; 
+            r_c.r_horizontal_rot_back = false;
+            r_c.r_is_horizontal = false;
+            r_c.r_up = false;
+            r_c.r_down = true;
+        }
     }
-
     void moveFace(string signal){
-    	FaceController f_c = GameObject.Find("Face").GetComponent<FaceController>();
-    	if(signal == "L"){
-    		f_c.face_right = false; 
-    		f_c.face_middle = false; 
-    		f_c.face_left = true; 
-    	}
-    	else if(signal == "M"){
-    		f_c.face_right = false; 
-    		f_c.face_middle = true; 
-    		f_c.face_left = false; 
-    	}
-    	else if(signal == "R"){
-    		f_c.face_right = true; 
-    		f_c.face_middle = false; 
-    		f_c.face_left = false; 
-    	}
+        FaceController f_c = GameObject.Find("MiddleFace").GetComponent<FaceController>();
+        if(signal == "L"){
+            f_c.face_right = false; 
+            f_c.face_middle = false; 
+            f_c.face_left = true; 
+        }
+        else if(signal == "M"){
+            f_c.face_right = false; 
+            f_c.face_middle = true; 
+            f_c.face_left = false; 
+        }
+        else if(signal == "R"){
+            f_c.face_right = true; 
+            f_c.face_middle = false; 
+            f_c.face_left = false; 
+        }
     }
 
     void spawnLeftBlock(string typeIndex){
