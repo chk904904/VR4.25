@@ -89,7 +89,7 @@ Material:
     - _DistortionStrengthScaled: 0.1
     - _Distortionpower: 0
     - _DstBlend: 1
-    - _Emission: 5
+    - _Emission: 20
     - _EmissionEnabled: 1
     - _FlipbookMode: 0
     - _GlossMapScale: 1

@@ -20,16 +20,17 @@ public class GloveFollowing : MonoBehaviour
     private Text debug;
     private Text instruction;
     private ScoreController SC;
-    private bool isRecognizing;
+    public bool isRecognizing;
     private string curPunch;
 
     private void Start()
     {
         ac = GetComponent<AudioSource>();
-        //SC = GameObject.Find("ScoreController").GetComponent<ScoreController>();
-        debug = GameObject.Find("debug").GetComponent<Text>();
-        instruction = GameObject.Find("instruction").GetComponent<Text>();
         StartCoroutine(displaySpeed());
+        if (GameObject.Find("debug") != null)
+        {
+            debug = GameObject.Find("debug").GetComponent<Text>();
+        }
     }
     void Update()
     {
@@ -48,7 +49,7 @@ public class GloveFollowing : MonoBehaviour
                 }
             }
         }
-        
+
     }
 
     IEnumerator PlayWoosh()
@@ -70,7 +71,10 @@ public class GloveFollowing : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        StartCoroutine(TriggerVibration());
+        if (other.GetComponent<BlockController>() != null)
+        {
+            StartCoroutine(TriggerVibration());
+        }
     }
     IEnumerator TriggerVibration()
     {
@@ -78,6 +82,7 @@ public class GloveFollowing : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         OVRInput.SetControllerVibration(1f, 0f, m_controller);
     }
+    
     IEnumerator displaySpeed()
     {
         float maxX = 0;
@@ -90,13 +95,13 @@ public class GloveFollowing : MonoBehaviour
             if (this.gameObject.name.Equals("RightGlove"))
             {
                 //debug.text = "Speed: " + ((newPosition - oldPosition) * 10).magnitude.ToString() + "; " + "Position: " + newPosition.ToString() + " " + newPosition.magnitude.ToString();
-                if ((newPosition - oldPosition).magnitude > 0.15)
+                if ((newPosition - oldPosition).magnitude > 0.1)
                 {
                     isRecognizing = true;
-                    if (!isPlayed)
-                    {
-                        StartCoroutine(PlayWoosh());
-                    }
+                    //if (!isPlayed)
+                    //{
+                    //    StartCoroutine(PlayWoosh());
+                    //}
                 }
                 else
                 {
@@ -116,11 +121,12 @@ public class GloveFollowing : MonoBehaviour
                 }
                 else
                 {
-                    if (maxX > 0.3)
-                    {
-                        curPunch = "Right Hook";
-                    }
-                    else if (maxZ > 0.2)
+                    //if (maxX > 0.4)
+                    //{
+                    //    curPunch = "Right Hook";
+                    //}
+                    //else 
+                    if (maxZ > 0.2)
                     {
                         curPunch = "Cross";
                     }
@@ -130,30 +136,31 @@ public class GloveFollowing : MonoBehaviour
                     }
                     if (isHitted)
                     {
-                        //SC.changeScore(curPunch.Equals(correctPunch));
                         if (curPunch.Equals(correctPunch))
                         {
-                            GameObject.Find("OverallController").GetComponent<OverallController>().updateScore(1);
-                        } else
-                        {
-                            GameObject.Find("OverallController").GetComponent<OverallController>().updateScore(0);
+                            GameObject.Find("OverallController").GetComponent<NewOverallController>().updateScore(correctPunch, true);
                         }
-                        
+                        else
+                        {
+                            GameObject.Find("OverallController").GetComponent<NewOverallController>().updateScore(correctPunch, false);
+                            GameObject.Find("CenterEyeAnchor").GetComponent<headSoundController>().playSound(1);
+                        }
                     }
                     isHitted = false;
                     maxX = 0;
                     maxZ = 0;
                 }
-            } else
+            }
+            else
             {
                 //debug.text = "Speed: " + ((newPosition - oldPosition) * 10).magnitude.ToString() + "; " + "Position: " + newPosition.ToString() + " " + newPosition.magnitude.ToString();
-                if ((newPosition - oldPosition).magnitude > 0.1)
+                if ((newPosition - oldPosition).magnitude > 0.15)
                 {
                     isRecognizing = true;
-                    if (!isPlayed)
-                    {
-                        StartCoroutine(PlayWoosh());
-                    }
+                    //if (!isPlayed)
+                    //{
+                    //    StartCoroutine(PlayWoosh());
+                    //}
                 }
                 else
                 {
@@ -173,11 +180,11 @@ public class GloveFollowing : MonoBehaviour
                 }
                 else
                 {
-                    if (maxX > 0.3)
+                    if (maxX > 0.4)
                     {
                         curPunch = "Left Hook";
                     }
-                    else if (maxZ > 0.2)
+                    else if (maxZ > 0.3)
                     {
                         curPunch = "Jab";
                     }
@@ -187,14 +194,13 @@ public class GloveFollowing : MonoBehaviour
                     }
                     if (isHitted)
                     {
-                        //SC.changeScore(curPunch.Equals(correctPunch));
                         if (curPunch.Equals(correctPunch))
                         {
-                            GameObject.Find("OverallController").GetComponent<OverallController>().updateScore(1);
-                        }
-                        else
+                            GameObject.Find("OverallController").GetComponent<NewOverallController>().updateScore(correctPunch, true);
+                        } else
                         {
-                            GameObject.Find("OverallController").GetComponent<OverallController>().updateScore(0);
+                            GameObject.Find("OverallController").GetComponent<NewOverallController>().updateScore(correctPunch, false);
+                            GameObject.Find("CenterEyeAnchor").GetComponent<headSoundController>().playSound(1);
                         }
 
                     }
@@ -203,7 +209,7 @@ public class GloveFollowing : MonoBehaviour
                     maxZ = 0;
                 }
             }
-            
+
 
         }
     }

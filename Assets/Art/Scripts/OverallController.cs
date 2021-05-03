@@ -436,8 +436,8 @@ public class OverallController : MonoBehaviour
     	else if(typeIndex == "R"){
     		index = 2;
     	}
-    	BlockSpawner b_s = GameObject.Find("Spawner").GetComponent<BlockSpawner>();
-    	b_s.spawn_left(index);
+    	//BlockSpawner b_s = GameObject.Find("Spawner").GetComponent<BlockSpawner>();
+    	//b_s.spawn_left(index);
     }
 
     void spawnRightBlock(string typeIndex){
@@ -451,8 +451,8 @@ public class OverallController : MonoBehaviour
     	else if(typeIndex == "R"){
     		index = 2;
     	}
-    	BlockSpawner b_s = GameObject.Find("Spawner").GetComponent<BlockSpawner>();
-    	b_s.spawn_right(index);
+    	//BlockSpawner b_s = GameObject.Find("Spawner").GetComponent<BlockSpawner>();
+    	//b_s.spawn_right(index);
 
     }
 
@@ -467,8 +467,8 @@ public class OverallController : MonoBehaviour
     	else if(typeIndex == "R"){
     		index = 2;
     	}
-    	BlockSpawner b_s = GameObject.Find("Spawner").GetComponent<BlockSpawner>();
-    	b_s.spawn_middle(index);
+    	//BlockSpawner b_s = GameObject.Find("Spawner").GetComponent<BlockSpawner>();
+    	//b_s.spawn_middle(index);
     }
 
 
